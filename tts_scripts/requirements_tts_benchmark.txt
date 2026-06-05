@@ -1,0 +1,40 @@
+# TTS Benchmarking Suite — DGX Spark
+# =====================================
+# pip install -r requirements_tts_benchmark.txt --break-system-packages
+
+# ── IndicF5 ───────────────────────────────────────────────────────
+# Install from source (not on PyPI)
+# Run manually: pip install git+https://github.com/ai4bharat/IndicF5.git
+# Also requires: huggingface-cli login  (model is gated — accept terms first)
+transformers>=4.49.0       # AutoModel loader for IndicF5
+torch>=2.2.0               # PyTorch — install with your CUDA version separately
+torchaudio>=2.2.0          # audio ops used internally by IndicF5
+
+# ── Round-trip STT: IndicConformer ────────────────────────────────
+nemo_toolkit[asr]>=1.23.0
+
+# ── Round-trip STT: Whisper ───────────────────────────────────────
+openai-whisper>=20231117
+
+# ── MOS estimation ────────────────────────────────────────────────
+# UTMOS: https://github.com/sarulab-speech/UTMOS22
+# Not on PyPI — install manually if needed:
+#   pip install utmos --break-system-packages
+# Or from source: pip install git+https://github.com/sarulab-speech/UTMOS22.git
+# The benchmark runs without it (scores reported as -1.0)
+
+# ── Audio I/O ─────────────────────────────────────────────────────
+soundfile>=0.12.1
+numpy>=1.24.0
+
+# ── WER/CER ───────────────────────────────────────────────────────
+jiwer>=3.0.3
+
+# ── GPU monitoring ────────────────────────────────────────────────
+nvidia-ml-py>=12.535.77    # pynvml
+
+# ── PyTorch CUDA (install separately with correct CUDA version) ───
+# Example for CUDA 12.1:
+#   pip install torch==2.2.0+cu121 torchaudio==2.2.0+cu121 \
+#       --extra-index-url https://download.pytorch.org/whl/cu121
+# DGX Spark ships with CUDA 12.x — check with: nvidia-smi
