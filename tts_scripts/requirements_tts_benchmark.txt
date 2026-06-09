@@ -14,6 +14,7 @@ soundfile
 safetensors 
 huggingface_hub
 torchaudio>=2.2.0          # audio ops used internally by IndicF5
+torchcodec
 
 # ── Round-trip STT: IndicConformer ────────────────────────────────
 nemo_toolkit[asr]>=1.23.0
