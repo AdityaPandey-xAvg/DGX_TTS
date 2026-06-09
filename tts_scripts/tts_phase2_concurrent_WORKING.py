@@ -182,7 +182,7 @@ def _worker_inference(
 
     # ── Audio metrics ─────────────────────────────────────────────────────────
     gen_dur = audio_duration(audio)
-    rtf = duration_sec / gen_dur if gen_dur > 0 else 0.0
+    rtf = total_duration_sec / gen_dur if gen_dur > 0 else 0.0
     sil = silence_ratio(audio)
     clip = clipping_ratio(audio)
     mos = estimate_mos(utmos_scorer, audio)
@@ -277,7 +277,7 @@ def run_at_concurrency(
     """
     all_file_results: list[TTSFileResult] = []
     all_latencies: list[float] = []
-    all_wall_times: list[float] = []
+    all_durations: list[float] = []
     all_vram: list[float] = []
     all_util: list[float] = []
 
@@ -291,7 +291,7 @@ def run_at_concurrency(
         chunks = [rotated[i:i + concurrency] for i in range(0, len(rotated), concurrency)]
 
         repeat_latencies: list[float] = []
-        repeat_wall_total = 0.0
+        repeat_total_duration = 0.0
         repeat_file_results: list[TTSFileResult] = []
 
         for chunk_idx, chunk in enumerate(chunks):
@@ -338,27 +338,27 @@ def run_at_concurrency(
                     except Exception as e:
                         log.error(f"Worker {futures[fut]} failed: {e}")
 
-            chunk_wall_time = time.perf_counter() - chunk_start
+            chunk_duration = time.perf_counter() - chunk_start
             gpu_stats = gpu_monitor.stop()
 
-            repeat_wall_total += chunk_wall_time
+            repeat_total_duration += chunk_duration
             repeat_file_results.extend(chunk_file_results)
             all_vram.append(gpu_stats["peak_vram_mb"])
             all_util.append(gpu_stats["mean_util_pct"])
 
             log.info(
-                f"    → chunk wall time: {chunk_wall_time:.3f}s | "
+                f"    → chunk total duration: {chunk_duration:.3f}s | "
                 f"VRAM={gpu_stats['peak_vram_mb']:.0f}MB | "
                 f"GPU={gpu_stats['mean_util_pct']:.1f}%"
             )
 
         all_file_results.extend(repeat_file_results)
         all_latencies.extend(repeat_latencies)
-        all_wall_times.append(repeat_wall_total)
+        all_durations.append(repeat_total_duration)
 
-        repeat_tp = len(repeat_file_results) / repeat_wall_total if repeat_wall_total > 0 else 0
+        repeat_tp = len(repeat_file_results) / repeat_total_duration if repeat_total_duration > 0 else 0
         log.info(
-            f"  Loop {loop_number} done: {repeat_wall_total:.2f}s total | "
+            f"  Loop {loop_number} done: {repeat_total_duration:.2f}s total | "
             f"{repeat_tp:.2f} sent/s | "
             f"mean thread duration={statistics.mean(repeat_latencies):.3f}s"
         )
@@ -376,11 +376,11 @@ def run_at_concurrency(
     return TTSBatchResult(
         concurrency_level=concurrency,
         n_sentences=len(sentences),
-        total_wall_time_sec=statistics.mean(all_wall_times),
+        total_wall_time_sec=statistics.mean(all_durations),
         mean_latency_sec=statistics.mean(all_latencies),
         p50_latency_sec=sorted_lat[n // 2] if n > 0 else 0.0,
         p95_latency_sec=sorted_lat[int(n * 0.95)] if n > 0 else 0.0,
-        throughput_sentences_per_sec=len(all_file_results) / sum(all_wall_times) if sum(all_wall_times) > 0 else 0.0,
+        throughput_sentences_per_sec=len(all_file_results) / sum(all_durations) if sum(all_durations) > 0 else 0.0,
         mean_rtf=statistics.mean(r.rtf for r in all_file_results),
         mean_silence_ratio=statistics.mean(r.silence_ratio for r in all_file_results),
         mean_clipping_ratio=statistics.mean(r.clipping_ratio for r in all_file_results),
