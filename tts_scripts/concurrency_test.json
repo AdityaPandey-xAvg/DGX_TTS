@@ -1,0 +1,10 @@
+[
+  {"id": "c001", "text": "नमस्ते, आप कैसे हैं? आज का दिन कैसा रहा?", "length_category": "short"},
+  {"id": "c002", "text": "भारत की राजधानी नई दिल्ली है और यह देश का सबसे बड़ा शहर भी है।", "length_category": "medium"},
+  {"id": "c003", "text": "आज मौसम बहुत सुहावना है, ठंडी हवा चल रही है और आसमान में हल्के बादल छाए हुए हैं।", "length_category": "medium"},
+  {"id": "c004", "text": "Mujhe kal subah jaldi uthna hai kyunki meri ek important meeting hai office mein.", "length_category": "medium"},
+  {"id": "c005", "text": "तकनीक की मदद से आज हम घर बैठे दुनिया के किसी भी कोने से जुड़ सकते हैं और यह हमारे जीवन को बहुत आसान बना देता है।", "length_category": "long"},
+  {"id": "c006", "text": "Aaj ke digital zamane mein social media ek bahut badi taakat ban gaya hai jo logon ko ek doosre se jodta hai.", "length_category": "long"},
+  {"id": "c007", "text": "स्वास्थ्य ही असली धन है। नियमित व्यायाम, संतुलित आहार, और पर्याप्त नींद लेना बहुत ज़रूरी है।", "length_category": "medium"},
+  {"id": "c008", "text": "नमस्ते! आपका दिन शुभ हो।", "length_category": "short"}
+]

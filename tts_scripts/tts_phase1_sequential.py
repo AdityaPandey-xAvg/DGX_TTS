@@ -22,6 +22,13 @@ Usage:
         --limit        3 \
         --runs         1 \
         --skip-roundtrip
+    python tts_phase1_sequential.py \
+        --ref-audio    ./ref_clips/ref_speaker.wav \
+        --ref-text     "हलो मेरा नाम आदित्य है।" \
+        --output       ./tts_results/phase1 \
+        --limit        3 \
+        --runs         1 \
+        --skip-roundtrip
 
 Reference audio requirements:
     - Duration: 3–15 seconds (IndicF5 supports up to ~15s ref; total output ≤ 30s)

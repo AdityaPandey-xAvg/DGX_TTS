@@ -1,0 +1,46 @@
+{
+  "phase": "tts_phase1",
+  "model_name": "ai4bharat/IndicF5",
+  "reference_audio": "my_hindi.wav",
+  "timestamp": "2026-06-05T11:52:44.290129+00:00",
+  "results": [
+    {
+      "sentence_id": "long_001",
+      "input_text": "नमस्ते! मैं आपको भारतीय कृषि के बारे में कुछ महत्वपूर्ण जानकारी देना चाहता हूँ। भारत एक कृषि प्रधान देश है जहाँ लगभग साठ प्रतिशत जनसंख्या कृषि पर निर्भर है। हमारे देश में गेहूँ, चावल, दलहन, तिलहन और सब्जियों की खेती बड़े पैमाने पर होती है। आधुनिक तकनीक और सिंचाई के साधनों से किसानों की आय में वृद्धि हो रही है।",
+      "generated_wav_path": "tts_results/phase1/audio/long_001_run00.wav",
+      "latency_sec": 12.276301418000003,
+      "generated_audio_sec": 25.047,
+      "rtf": 0.4901306111709986,
+      "silence_ratio": 0.3783503679748739,
+      "clipping_ratio": 1.6635392129463276e-06,
+      "utmos_score": -1.0,
+      "indicconformer_hypothesis": "",
+      "indicconformer_cer": -1.0,
+      "indicconformer_wer": -1.0,
+      "whisper_hypothesis": "",
+      "whisper_cer": -1.0,
+      "whisper_wer": -1.0,
+      "run_index": 0,
+      "concurrency_level": null,
+      "worker_id": null
+    }
+  ],
+  "summary": {
+    "n_sentences": 1,
+    "n_runs_per_sentence": 1,
+    "total_inference_calls": 1,
+    "mean_latency_sec": 12.276301418000003,
+    "std_latency_sec": 0.0,
+    "p50_latency_sec": 12.276301418000003,
+    "p95_latency_sec": 12.276301418000003,
+    "p99_latency_sec": 12.276301418000003,
+    "mean_rtf": 0.4901306111709986,
+    "mean_utmos_mos": -1.0,
+    "mean_silence_ratio": 0.3783503679748739,
+    "mean_clipping_ratio": 1.6635392129463276e-06,
+    "mean_indicconformer_cer": -1.0,
+    "mean_indicconformer_wer": -1.0,
+    "mean_whisper_cer": -1.0,
+    "mean_whisper_wer": -1.0
+  }
+}

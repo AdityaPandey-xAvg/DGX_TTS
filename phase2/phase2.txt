@@ -1,0 +1,157 @@
+2026-06-05 12:18:38,575 [INFO]                                                                                                                                                                                                                 
+============================================================                                                                                                                                                                                   
+2026-06-05 12:18:38,575 [INFO] CONCURRENCY LEVEL: 1                                                                                                                                                                                            
+2026-06-05 12:18:38,575 [INFO] ============================================================                                                                                                                                                    
+2026-06-05 12:18:38,575 [INFO]                                                                                                                                                                                                                 
+  Repeat 1/2                                                                                                                                                                                                                                   
+2026-06-05 12:18:38,575 [INFO]     Chunk 1/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:40,834 [INFO]     → chunk done: 2.135s | 0.47 sent/s | VRAM=2169MB | GPU=98.8%                                                                                                                                                
+2026-06-05 12:18:40,834 [INFO]     Chunk 2/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:43,589 [INFO]     → chunk done: 2.704s | 0.37 sent/s | VRAM=2169MB | GPU=81.5%                                                                                                                                                
+2026-06-05 12:18:43,589 [INFO]     Chunk 3/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:47,094 [INFO]     → chunk done: 3.294s | 0.30 sent/s | VRAM=2189MB | GPU=100.0%                                                                                                                                               
+2026-06-05 12:18:47,094 [INFO]     Chunk 4/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:49,097 [INFO]     → chunk done: 1.967s | 0.51 sent/s | VRAM=2189MB | GPU=99.2%                                                                                                                                                
+2026-06-05 12:18:49,097 [INFO]     Chunk 5/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:53,602 [INFO]     → chunk done: 4.419s | 0.23 sent/s | VRAM=2189MB | GPU=99.8%                                                                                                                                                
+2026-06-05 12:18:53,603 [INFO]     Chunk 6/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:55,855 [INFO]     → chunk done: 2.203s | 0.45 sent/s | VRAM=2189MB | GPU=99.2%                                                                                                                                                
+2026-06-05 12:18:55,856 [INFO]     Chunk 7/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:18:59,859 [INFO]     → chunk done: 3.794s | 0.26 sent/s | VRAM=2189MB | GPU=98.1%                                                                                                                                                
+2026-06-05 12:18:59,860 [INFO]     Chunk 8/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:01,614 [INFO]     → chunk done: 1.688s | 0.59 sent/s | VRAM=2189MB | GPU=70.9%                                                                                                                                                
+2026-06-05 12:19:01,614 [INFO]   Repeat 1 total: 22.20s | 0.36 sent/s | mean lat=2.772s                                                                                                                                                        
+2026-06-05 12:19:01,615 [INFO]                                                                                                                                                                                                                 
+  Repeat 2/2                                                                                                                                                                                                                                   
+2026-06-05 12:19:01,615 [INFO]     Chunk 1/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:04,368 [INFO]     → chunk done: 2.702s | 0.37 sent/s | VRAM=2189MB | GPU=99.0%                                                                                                                                                
+2026-06-05 12:19:04,368 [INFO]     Chunk 2/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:07,872 [INFO]     → chunk done: 3.283s | 0.30 sent/s | VRAM=2189MB | GPU=98.8%                                                                                                                                                
+2026-06-05 12:19:07,873 [INFO]     Chunk 3/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:09,875 [INFO]     → chunk done: 1.955s | 0.51 sent/s | VRAM=2189MB | GPU=74.4%                                                                                                                                                
+2026-06-05 12:19:09,875 [INFO]     Chunk 4/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:14,380 [INFO]     → chunk done: 4.420s | 0.23 sent/s | VRAM=2189MB | GPU=99.7%                                                                                                                                                
+2026-06-05 12:19:14,380 [INFO]     Chunk 5/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:16,633 [INFO]     → chunk done: 2.204s | 0.45 sent/s | VRAM=2189MB | GPU=91.2%                                                                                                                                                
+2026-06-05 12:19:16,633 [INFO]     Chunk 6/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:20,637 [INFO]     → chunk done: 3.794s | 0.26 sent/s | VRAM=2189MB | GPU=99.9%                                                                                                                                                
+2026-06-05 12:19:20,637 [INFO]     Chunk 7/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:22,391 [INFO]     → chunk done: 1.688s | 0.59 sent/s | VRAM=2189MB | GPU=99.1%                                                                                                                                                
+2026-06-05 12:19:22,391 [INFO]     Chunk 8/8 — 1 concurrent workers                                                                                                                                                                            
+2026-06-05 12:19:24,645 [INFO]     → chunk done: 2.134s | 0.47 sent/s | VRAM=2189MB | GPU=99.0%                                                                                                                                                
+2026-06-05 12:19:24,646 [INFO]   Repeat 2 total: 22.18s | 0.36 sent/s | mean lat=2.769s                                                                                                                                                        
+2026-06-05 12:19:24,647 [INFO]                                                                                                                                                                                                                 
+  ▶ concurrency=1 AGGREGATE:                                                                                                                                                                                                                   
+2026-06-05 12:19:24,647 [INFO]     throughput   : 0.361 sent/s                                                                                                                                                                                 
+2026-06-05 12:19:24,647 [INFO]     mean latency : 2.770s                                                                                                                                                                                       
+2026-06-05 12:19:24,647 [INFO]     P95 latency  : 4.416s                                                                                                                                                                                       
+2026-06-05 12:19:24,647 [INFO]     mean MOS     : -1.00                                                                                                                                                                                        
+2026-06-05 12:19:24,647 [INFO]     IC-CER       : -1.000                                                                                                                                                                                       
+2026-06-05 12:19:24,648 [INFO]     W-CER        : -1.000                                                                                                                                                                                       
+2026-06-05 12:19:24,648 [INFO]     peak VRAM    : 2189 MB                                                                                                                                                                                      
+2026-06-05 12:19:24,648 [INFO]     mean GPU util: 94.3%                                                                                                                                                                                        
+2026-06-05 12:19:24,648 [INFO]                                                                                                                                                                                                                 
+============================================================                                                                                                                                                                                   
+2026-06-05 12:19:24,648 [INFO] CONCURRENCY LEVEL: 2                                                                                                                                                                                            
+2026-06-05 12:19:24,648 [INFO] ============================================================                                                                                                                                                    
+2026-06-05 12:19:24,648 [INFO]                                                                                                                                                                                                                 
+  Repeat 1/2
+2026-06-05 12:19:24,648 [INFO]     Chunk 1/4 — 2 concurrent workers
+2026-06-05 12:19:29,652 [INFO]     → chunk done: 4.886s | 0.41 sent/s | VRAM=2261MB | GPU=99.2%
+2026-06-05 12:19:29,652 [INFO]     Chunk 2/4 — 2 concurrent workers
+2026-06-05 12:19:35,157 [INFO]     → chunk done: 5.294s | 0.38 sent/s | VRAM=2261MB | GPU=98.0%
+2026-06-05 12:19:35,157 [INFO]     Chunk 3/4 — 2 concurrent workers
+2026-06-05 12:19:41,915 [INFO]     → chunk done: 6.633s | 0.30 sent/s | VRAM=2281MB | GPU=99.6%
+2026-06-05 12:19:41,915 [INFO]     Chunk 4/4 — 2 concurrent workers
+2026-06-05 12:19:47,671 [INFO]     → chunk done: 5.524s | 0.36 sent/s | VRAM=2281MB | GPU=95.9%
+2026-06-05 12:19:47,671 [INFO]   Repeat 1 total: 22.34s | 0.36 sent/s | mean lat=5.575s
+2026-06-05 12:19:47,671 [INFO] 
+  Repeat 2/2
+2026-06-05 12:19:47,671 [INFO]     Chunk 1/4 — 2 concurrent workers
+2026-06-05 12:19:52,925 [INFO]     → chunk done: 5.240s | 0.38 sent/s | VRAM=2281MB | GPU=99.4%
+2026-06-05 12:19:52,925 [INFO]     Chunk 2/4 — 2 concurrent workers
+2026-06-05 12:19:59,679 [INFO]     → chunk done: 6.616s | 0.30 sent/s | VRAM=2283MB | GPU=99.7%
+2026-06-05 12:19:59,679 [INFO]     Chunk 3/4 — 2 concurrent workers
+2026-06-05 12:20:05,184 [INFO]     → chunk done: 5.487s | 0.36 sent/s | VRAM=2283MB | GPU=98.8%
+2026-06-05 12:20:05,184 [INFO]     Chunk 4/4 — 2 concurrent workers
+2026-06-05 12:20:10,188 [INFO]     → chunk done: 4.848s | 0.41 sent/s | VRAM=2283MB | GPU=99.3%
+2026-06-05 12:20:10,188 [INFO]   Repeat 2 total: 22.19s | 0.36 sent/s | mean lat=5.539s
+2026-06-05 12:20:10,189 [INFO] 
+  ▶ concurrency=2 AGGREGATE:
+2026-06-05 12:20:10,190 [INFO]     throughput   : 0.359 sent/s
+2026-06-05 12:20:10,190 [INFO]     mean latency : 5.557s
+2026-06-05 12:20:10,190 [INFO]     P95 latency  : 6.630s
+2026-06-05 12:20:10,190 [INFO]     mean MOS     : -1.00
+2026-06-05 12:20:10,190 [INFO]     IC-CER       : -1.000
+2026-06-05 12:20:10,190 [INFO]     W-CER        : -1.000
+2026-06-05 12:20:10,190 [INFO]     peak VRAM    : 2283 MB
+2026-06-05 12:20:10,190 [INFO]     mean GPU util: 98.7%
+2026-06-05 12:20:10,191 [INFO] 
+============================================================
+2026-06-05 12:20:10,191 [INFO] CONCURRENCY LEVEL: 4
+2026-06-05 12:20:10,191 [INFO] ============================================================
+2026-06-05 12:20:10,191 [INFO] 
+  Repeat 1/2
+2026-06-05 12:20:10,191 [INFO]     Chunk 1/2 — 4 concurrent workers
+2026-06-05 12:20:20,449 [INFO]     → chunk done: 10.220s | 0.39 sent/s | VRAM=2427MB | GPU=94.8%
+2026-06-05 12:20:20,449 [INFO]     Chunk 2/2 — 4 concurrent workers
+2026-06-05 12:20:32,960 [INFO]     → chunk done: 12.328s | 0.32 sent/s | VRAM=2451MB | GPU=99.7%
+2026-06-05 12:20:32,961 [INFO]   Repeat 1 total: 22.55s | 0.35 sent/s | mean lat=11.255s
+2026-06-05 12:20:32,961 [INFO] 
+  Repeat 2/2
+2026-06-05 12:20:32,961 [INFO]     Chunk 1/2 — 4 concurrent workers
+2026-06-05 12:20:45,489 [INFO]     → chunk done: 12.305s | 0.33 sent/s | VRAM=2451MB | GPU=96.9%
+2026-06-05 12:20:45,490 [INFO]     Chunk 2/2 — 4 concurrent workers
+2026-06-05 12:20:55,747 [INFO]     → chunk done: 10.240s | 0.39 sent/s | VRAM=2451MB | GPU=95.6%
+2026-06-05 12:20:55,748 [INFO]   Repeat 2 total: 22.55s | 0.35 sent/s | mean lat=11.251s
+2026-06-05 12:20:55,748 [INFO] 
+  ▶ concurrency=4 AGGREGATE:
+2026-06-05 12:20:55,748 [INFO]     throughput   : 0.355 sent/s
+2026-06-05 12:20:55,748 [INFO]     mean latency : 11.253s
+2026-06-05 12:20:55,748 [INFO]     P95 latency  : 12.324s
+2026-06-05 12:20:55,748 [INFO]     mean MOS     : -1.00
+2026-06-05 12:20:55,748 [INFO]     IC-CER       : -1.000
+2026-06-05 12:20:55,748 [INFO]     W-CER        : -1.000
+2026-06-05 12:20:55,748 [INFO]     peak VRAM    : 2451 MB
+2026-06-05 12:20:55,748 [INFO]     mean GPU util: 96.8%
+2026-06-05 12:20:55,748 [INFO] 
+============================================================
+============================================================
+2026-06-05 12:20:55,748 [INFO] CONCURRENCY LEVEL: 8
+2026-06-05 12:20:55,748 [INFO] ============================================================
+2026-06-05 12:20:55,748 [INFO] 
+  Repeat 1/2
+2026-06-05 12:20:55,748 [INFO]     Chunk 1/1 — 8 concurrent workers
+2026-06-05 12:21:18,544 [INFO]     → chunk done: 22.790s | 0.35 sent/s | VRAM=2761MB | GPU=97.4%
+2026-06-05 12:21:18,544 [INFO]   Repeat 1 total: 22.79s | 0.35 sent/s | mean lat=22.750s
+2026-06-05 12:21:18,544 [INFO] 
+  Repeat 2/2
+2026-06-05 12:21:18,544 [INFO]     Chunk 1/1 — 8 concurrent workers
+2026-06-05 12:21:41,333 [INFO]     → chunk done: 22.725s | 0.35 sent/s | VRAM=2761MB | GPU=99.4%
+2026-06-05 12:21:41,334 [INFO]   Repeat 2 total: 22.72s | 0.35 sent/s | mean lat=22.618s
+2026-06-05 12:21:41,335 [INFO] 
+  ▶ concurrency=8 AGGREGATE:
+2026-06-05 12:21:41,335 [INFO]     throughput   : 0.352 sent/s
+2026-06-05 12:21:41,335 [INFO]     mean latency : 22.684s
+2026-06-05 12:21:41,335 [INFO]     P95 latency  : 22.784s
+2026-06-05 12:21:41,336 [INFO]     mean MOS     : -1.00
+2026-06-05 12:21:41,336 [INFO]     IC-CER       : -1.000
+2026-06-05 12:21:41,336 [INFO]     W-CER        : -1.000
+2026-06-05 12:21:41,336 [INFO]     peak VRAM    : 2761 MB
+2026-06-05 12:21:41,336 [INFO]     mean GPU util: 98.4%
+2026-06-05 12:21:41,336 [INFO] 
+============================================================
+2026-06-05 12:21:41,336 [INFO] PHASE 2 SUMMARY
+2026-06-05 12:21:41,336 [INFO] ============================================================
+2026-06-05 12:21:41,336 [INFO]   concurrency_levels_tested: [1, 2, 4, 8]
+2026-06-05 12:21:41,336 [INFO]   baseline_concurrency_1_mean_latency_sec: 2.7701513198752536
+2026-06-05 12:21:41,336 [INFO]   baseline_concurrency_1_p95_latency_sec: 4.415792054998747
+2026-06-05 12:21:41,336 [INFO]   best_throughput_concurrency_level: 1
+2026-06-05 12:21:41,337 [INFO]   best_throughput_sentences_per_sec: 0.3605013793900278
+2026-06-05 12:21:41,337 [INFO]   p95_latency_degradation_point_concurrency: 4
+2026-06-05 12:21:41,337 [INFO]   quality_mos_stable_across_concurrency: True
+2026-06-05 12:21:41,337 [INFO]   quality_cer_stable_across_concurrency: True
+2026-06-05 12:21:41,337 [INFO]   recommended_max_concurrency: 3
+2026-06-05 12:21:41,342 [INFO] JSON report → tts_results/phase2/tts_phase2_results.json
+2026-06-05 12:21:41,342 [INFO] Markdown report → tts_results/phase2/tts_phase2_report.md
+2026-06-05 12:21:41,342 [INFO] 

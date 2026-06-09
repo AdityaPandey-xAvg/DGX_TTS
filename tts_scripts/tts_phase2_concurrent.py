@@ -48,11 +48,28 @@ Usage:
     # Smoke test:
     python tts_phase2_concurrent.py \
         --ref-audio   ./ref_clips/ref_speaker.wav \
-        --ref-text    "transcript" \
+        --ref-text    " हलो मेरा नाम आदित्य है।" \
         --concurrency 1 4 8 \
         --repeats     1 \
         --limit       8 \
         --skip-roundtrip
+    # Smoke test:
+    python tts_phase2_concurrent.py \
+        --ref-audio   ./ref_clips/ref_speaker.wav \
+        --ref-text    " हलो मेरा नाम आदित्य है।" \
+        --concurrency 1 4 8 \
+        --repeats     1 \
+        --limit       8 \
+        --skip-roundtrip
+   python tts_phase2_concurrent.py \
+    --ref-audio   ./my_hindi.wav \
+    --ref-text     " हलो मेरा नाम आदित्य है।"\
+    --sentences   ./long_test.json \
+    --output      ./tts_results/phase2 \
+    --concurrency 1 2 4 8 \
+    --repeats     2 \
+    --skip-roundtrip 
+
 
 Output:
     tts_phase2_results.json   — per-concurrency aggregated results
