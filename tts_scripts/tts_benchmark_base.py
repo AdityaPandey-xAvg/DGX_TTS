@@ -112,7 +112,7 @@ class TTSPhaseReport:
 
 def load_indicf5(repo_id: str = INDICF5_REPO):
     """
-    Load IndicF5 from HuggingFace.
+    Load IndicF5 from HuggingFace and explicitly move to CUDA if available.
 
     Requires:
         pip install git+https://github.com/ai4bharat/IndicF5.git
@@ -121,17 +121,58 @@ def load_indicf5(repo_id: str = INDICF5_REPO):
     The model is a flow-matching TTS. Each inference call:
         audio_array = model(text, ref_audio_path, ref_text)
     Returns a numpy float32 array at 24 kHz.
+
+    Device placement note:
+        AutoModel.from_pretrained() without device_map loads onto CPU by
+        default regardless of CUDA availability. We must call .to(device)
+        explicitly after loading — this is the pattern used in AI4Bharat's
+        own official Gradio Space (app.py). Without this, all inference
+        runs on CPU and RTF will be ~17x instead of <1x on GPU.
+
+    transformers version note:
+        Pin transformers==4.49.0 to avoid the meta-tensor error on newer
+        versions. Run: pip install transformers==4.49.0
     """
     try:
+        import torch
         from transformers import AutoModel
     except ImportError:
-        raise ImportError("transformers not installed. Run: pip install transformers --break-system-packages")
+        raise ImportError("transformers not installed. Run: pip install transformers==4.49.0")
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     log.info(f"Loading IndicF5 from: {repo_id}")
+    log.info(f"Target device: {device}")
+    if device.type == "cpu":
+        log.warning(
+            "CUDA not available — IndicF5 will run on CPU. "
+            "Expect RTF ~15–20x (very slow). "
+            "Ensure PyTorch is installed with CUDA support: "
+            "pip install torch --index-url https://download.pytorch.org/whl/cu128"
+        )
+
     t0 = time.perf_counter()
     model = AutoModel.from_pretrained(repo_id, trust_remote_code=True)
+
+    # Explicitly move to device — AutoModel.from_pretrained does NOT do this
+    # automatically without device_map="auto". This is the root cause of the
+    # CPU-speed issue: the model loads but stays on CPU until .to(device).
+    model = model.to(device)
+
     elapsed = time.perf_counter() - t0
-    log.info(f"IndicF5 loaded in {elapsed:.1f}s")
+
+    # Confirm actual device of model parameters
+    try:
+        actual_device = next(model.parameters()).device
+        log.info(f"IndicF5 loaded in {elapsed:.1f}s — parameters on: {actual_device}")
+        if actual_device.type == "cpu" and torch.cuda.is_available():
+            log.warning(
+                "Model parameters are on CPU despite CUDA being available. "
+                "This may indicate a meta-tensor loading issue. "
+                "Try: pip install transformers==4.49.0 and reload."
+            )
+    except StopIteration:
+        log.info(f"IndicF5 loaded in {elapsed:.1f}s")
+
     return model
 
 
@@ -193,14 +234,33 @@ def run_tts(model, text: str, ref_audio_path: Path, ref_text: str) -> tuple[np.n
 
     audio_array is at TTS_SAMPLE_RATE (24 kHz), float32, values in [-1, 1].
     """
+    import torch
+
+    # Log GPU memory before call to confirm GPU is being used.
+    # If allocated_mb stays near 0 across all calls, model is on CPU.
+    if torch.cuda.is_available():
+        allocated_mb = torch.cuda.memory_allocated() / 1024 / 1024
+        log.debug(f"GPU memory before inference: {allocated_mb:.0f} MB")
+
     t0 = time.perf_counter()
     audio = model(text, str(ref_audio_path), ref_text)
     latency = time.perf_counter() - t0
 
+    if torch.cuda.is_available():
+        allocated_after = torch.cuda.memory_allocated() / 1024 / 1024
+        log.debug(f"GPU memory after inference: {allocated_after:.0f} MB")
+        if allocated_after < 100:
+            log.warning(
+                f"GPU memory after inference only {allocated_after:.0f} MB — "
+                "model may still be on CPU. Check load_indicf5() .to(device) completed."
+            )
+
     # Normalise to float32 in [-1, 1] regardless of what model returns
     audio = np.asarray(audio, dtype=np.float32)
-    if audio.max() > 1.0 or audio.min() < -1.0:
-        audio = audio / max(abs(audio.max()), abs(audio.min()))
+    if len(audio) > 0 and (audio.max() > 1.0 or audio.min() < -1.0):
+        peak = max(abs(audio.max()), abs(audio.min()))
+        if peak > 0:
+            audio = audio / peak
 
     return audio, latency
 

@@ -6,8 +6,13 @@
 # Install from source (not on PyPI)
 # Run manually: pip install git+https://github.com/ai4bharat/IndicF5.git
 # Also requires: huggingface-cli login  (model is gated — accept terms first)
-transformers>=4.49.0       # AutoModel loader for IndicF5
+# transformers>=4.49.0       # AutoModel loader for IndicF5
 torch>=2.2.0               # PyTorch — install with your CUDA version separately
+transformers==4.49.0 
+pydub 
+soundfile 
+safetensors 
+huggingface_hub
 torchaudio>=2.2.0          # audio ops used internally by IndicF5
 
 # ── Round-trip STT: IndicConformer ────────────────────────────────

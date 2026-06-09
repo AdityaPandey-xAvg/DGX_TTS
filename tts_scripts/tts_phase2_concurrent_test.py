@@ -78,21 +78,15 @@ DEFAULT_CONCURRENCY_LEVELS = [1, 2, 4, 8, 16, 32]
 # ─────────────────────────────────────────────────────────────────────────────
 
 CSV_COLUMNS = [
-    "concurrency_level",      # how many threads fired simultaneously in this chunk
-    "loop_number",            # which repeat (1-based)
-    "total_sentences_batch",  # how many sentences were in this concurrency chunk
-    "thread_id",              # which worker inside the chunk (0-based)
-    "sentence_id",            # e.g. c001
-    "sentence_text",          # the actual text sent to TTS
-    "thread_start_time_sec",  # seconds since chunk started when this thread began
-    "thread_end_time_sec",    # seconds since chunk started when this thread finished
-    "duration_sec",           # thread_end_time_sec - thread_start_time_sec
-    "generated_audio_sec",    # length of the audio the model produced
-    "rtf",                    # duration_sec / generated_audio_sec
-    "gpu_vram_mb",            # GPU VRAM used at end of this thread's inference
-    "gpu_util_pct",           # GPU utilisation % at end of this thread's inference
-    "silence_ratio",          # fraction of audio below silence threshold
-    "clipping_ratio",         # fraction of audio at ±1.0
+    "concurrency_level",   # number of threads (1, 2, 4, 8)
+    "loop_number",         # which repeat (1-based)
+    "total_sentences",     # total sentences in this batch
+    "thread_id",           # which thread (0-based)
+    "thread_start_sec",    # seconds since benchmark started when thread began
+    "thread_end_sec",      # seconds since benchmark started when thread completed
+    "total_duration_sec",  # thread_end_sec - thread_start_sec
+    "gpu_vram_mb",         # GPU VRAM at thread completion
+    "gpu_util_pct",        # GPU utilisation % at thread completion
 ]
 
 
@@ -150,19 +144,19 @@ def _worker_inference(
     gpu_index: int,
     csv_path: Path,
     skip_roundtrip: bool,
-    chunk_t0: float = 0.0,   # perf_counter value when the chunk started
+    benchmark_t0: float = 0.0,   # perf_counter value when the full benchmark started
 ) -> TTSFileResult:
     """
     Single worker — runs in its own thread.
 
     Timeline inside this function:
-      thread_start_time_sec  ← seconds after chunk_t0, recorded first thing
+      thread_start_sec  ← seconds since benchmark_t0, recorded first thing
             |
             |  model(text, ref_audio, ref_text)  ← thread blocked here
             |  GPU does the work (interleaved with other threads)
             |
-      thread_end_time_sec    ← seconds after chunk_t0, recorded when model() returns
-      duration_sec = thread_end_time_sec - thread_start_time_sec
+      thread_end_sec    ← seconds since benchmark_t0, recorded when model() returns
+      total_duration_sec = thread_end_sec - thread_start_sec
 
     Each thread measures its own start/end independently, so you can see
     exactly when each one started and finished relative to each other.
@@ -170,15 +164,18 @@ def _worker_inference(
     sent_id = sent["id"]
     text = sent["text"]
 
-    start_ms = int(time.time() * 1000)   # milliseconds since epoch, time-only
-    t0 = time.perf_counter()
+    # perf_counter relative to benchmark start — so row 1 starts at e.g. 0.0012,
+    # row 2 starts at 2.3412 (right after row 1 ended), and so on.
+    t_start = time.perf_counter()
+    thread_start_sec = round(t_start - benchmark_t0, 4)
 
     # ── Model call — thread blocks here until GPU returns audio ───────────────
     audio, _ = run_tts(tts_model, text, ref_audio_path, ref_text)
 
-    # ── Record end time immediately after model returns ───────────────────────
-    duration_sec = time.perf_counter() - t0
-    end_ms = int(time.time() * 1000)     # milliseconds since epoch, time-only
+    # ── Record end immediately after model returns ────────────────────────────
+    t_end = time.perf_counter()
+    thread_end_sec   = round(t_end - benchmark_t0, 4)
+    total_duration_sec = round(t_end - t_start, 4)
 
     # ── GPU snapshot — read current GPU state right after inference ───────────
     gpu_vram_mb, gpu_util_pct = _gpu_snapshot(gpu_index)
@@ -202,28 +199,23 @@ def _worker_inference(
             "whisper_hypothesis": "", "whisper_cer": -1.0, "whisper_wer": -1.0,
         }
 
-    # ── Write CSV row — one row = one thread = one sentence ──────────────────
+    # ── Write CSV row ────────────────────────────────────────────────────────
     append_csv_row(csv_path, {
-        "concurrency_level":     concurrency_level,
-        "loop_number":           loop_number,
-        "total_sentences_batch": total_sentences_batch,
-        "thread_id":             worker_id,
-        "sentence_id":           sent_id,
-        "sentence_text":         text[:80],           # truncate very long texts
-        "thread_start_time_sec": thread_start_sec,
-        "thread_end_time_sec":   thread_end_sec,
-        "duration_sec":          round(duration_sec, 4),
-        "generated_audio_sec":   round(gen_dur, 4),
-        "rtf":                   round(rtf, 4),
-        "gpu_vram_mb":           round(gpu_vram_mb, 1),
-        "gpu_util_pct":          round(gpu_util_pct, 1),
-        "silence_ratio":         round(sil, 4),
-        "clipping_ratio":        round(clip, 6),
+        "concurrency_level":  concurrency_level,
+        "loop_number":        loop_number,
+        "total_sentences":    total_sentences_batch,
+        "thread_id":          worker_id,
+        "thread_start_sec":   thread_start_sec,
+        "thread_end_sec":     thread_end_sec,
+        "total_duration_sec": total_duration_sec,
+        "gpu_vram_mb":        round(gpu_vram_mb, 1),
+        "gpu_util_pct":       round(gpu_util_pct, 1),
     })
 
     log.info(
         f"    [c={concurrency_level} loop={loop_number} thread={worker_id}] "
-        f"{sent_id} → {duration_sec:.3f}s | audio={gen_dur:.2f}s | RTF={rtf:.3f} | "
+        f"start={thread_start_sec}s → end={thread_end_sec}s | "
+        f"duration={total_duration_sec}s | "
         f"VRAM={gpu_vram_mb:.0f}MB | GPU={gpu_util_pct:.1f}%"
     )
 
@@ -231,7 +223,7 @@ def _worker_inference(
         sentence_id=sent_id,
         input_text=text,
         generated_wav_path=str(wav_path),
-        latency_sec=duration_sec,
+        latency_sec=total_duration_sec,
         generated_audio_sec=gen_dur,
         rtf=rtf,
         silence_ratio=sil,
@@ -268,6 +260,7 @@ def run_at_concurrency(
     gpu_index: int,
     csv_path: Path,
     skip_roundtrip: bool,
+    benchmark_t0: float = 0.0,
 ) -> TTSBatchResult:
     """
     Run all sentences at a given concurrency level, repeated n_repeats times.
@@ -309,11 +302,7 @@ def run_at_concurrency(
             )
 
             gpu_monitor.start()
-            # chunk_t0 is the reference zero point for all threads in this chunk.
-            # Every thread subtracts chunk_t0 from its own perf_counter readings
-            # so start/end times are relative seconds-from-zero, not wall clock.
-            chunk_t0    = time.perf_counter()
-            chunk_start = chunk_t0
+            chunk_start = time.perf_counter()
 
             # ── Fire all threads simultaneously ───────────────────────────────
             with ThreadPoolExecutor(max_workers=actual_concurrency) as executor:
@@ -335,7 +324,7 @@ def run_at_concurrency(
                         gpu_index=gpu_index,
                         csv_path=csv_path,
                         skip_roundtrip=skip_roundtrip,
-                        chunk_t0=chunk_t0,
+                        benchmark_t0=benchmark_t0,
                     ): i
                     for i in range(actual_concurrency)
                 }
@@ -511,6 +500,12 @@ def main():
     run_tts(tts_model, sentences[0]["text"], ref_audio, args.ref_text)
     log.info("Warm-up done.\n")
 
+    # Single zero point for the entire benchmark.
+    # thread_start_sec / thread_end_sec in every CSV row is relative to this.
+    # Thread 1 starts at ~0.001s, ends at 2.345s.
+    # Thread 2 starts at 2.412s, ends at 4.891s. And so on continuously.
+    benchmark_t0 = time.perf_counter()
+
     all_batch_results: list[TTSBatchResult] = []
 
     for concurrency in args.concurrency:
@@ -528,6 +523,7 @@ def main():
             gpu_index=args.gpu_index,
             csv_path=csv_path,
             skip_roundtrip=args.skip_roundtrip,
+            benchmark_t0=benchmark_t0,
         )
         all_batch_results.append(batch_result)
 
